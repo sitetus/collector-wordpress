@@ -1,0 +1,170 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Sitetus 0.1.0\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Settings"
+msgstr "Ayarlar"
+
+msgid "Sitetus"
+msgstr "Sitetus"
+
+msgid "You do not have permission to manage this page."
+msgstr "Bu sayfayı yönetme yetkiniz yok."
+
+msgid "File trace"
+msgstr "Dosya izi"
+
+msgid "Sensitive file dates and sizes, executable files in upload folders, changed PHP files, web-shell signatures. File names only, never contents."
+msgstr "Hassas dosyaların tarih ve boyutları, yükleme dizinlerindeki çalıştırılabilir dosyalar, değişen PHP dosyaları, web kabuğu imzaları. Yalnız dosya adları, asla içerik."
+
+msgid "Archive scan"
+msgstr "Arşiv taraması"
+
+msgid "Forgotten backup archives and database dumps in the web root (names and sizes)."
+msgstr "Web kökünde unutulmuş yedek arşivleri ve veritabanı dökümleri (ad ve boyut)."
+
+msgid "Permissions"
+msgstr "İzinler"
+
+msgid "World-writable folders and files under the site root."
+msgstr "Site kökü altında herkese yazılabilir dizin ve dosyalar."
+
+msgid "AI bot traffic"
+msgstr "Yapay zeka bot trafiği"
+
+msgid "Counts per documented AI crawler from the newest access log (last 20 MB). No IP address, URL or user-agent string leaves the server."
+msgstr "En yeni erişim günlüğünden (son 20 MB) belgeli yapay zeka botu başına sayaçlar. IP adresi, URL ya da user-agent dizesi sunucudan çıkmaz."
+
+msgid "SEO plugin records"
+msgstr "SEO eklentisi kayıtları"
+
+msgid "Reads the active SEO plugin's own records (Yoast SEO, Rank Math, All in One SEO): how many published items are set to noindex per post type, post types closed to indexing, orphaned content, whether the plugin's sitemap and organization settings are filled. Counts and yes/no only; no title, URL or author leaves the server."
+msgstr "Etkin SEO eklentisinin kendi kayıtlarını okur (Yoast SEO, Rank Math, All in One SEO): içerik türü başına dizine kapalı yayınlanmış içerik sayısı, toptan dizine kapalı içerik türleri, bağlantı almayan içerik, eklentinin site haritası ve kuruluş ayarlarının dolu olup olmadığı. Yalnız sayı ve evet/hayır; başlık, adres ya da yazar adı sunucudan çıkmaz."
+
+msgid "Core file integrity"
+msgstr "Çekirdek dosya bütünlüğü"
+
+msgid "Compares the WordPress core files with the official checksum list of the installed version: changed files, missing files and PHP files in wp-admin and wp-includes that are not part of the release. To get the list, this site asks the WordPress update server (api.wordpress.org) each time the module runs. The request carries the WordPress version and the language package and, like every request WordPress makes, the standard WordPress header with the version and the site address. The panel receives counts and file names only; no file contents leave the server and no file is repaired, replaced or deleted."
+msgstr "WordPress çekirdek dosyalarını kurulu sürümün resmî sağlama listesiyle karşılaştırır: değişmiş dosyalar, eksik dosyalar ve wp-admin ile wp-includes içinde sürüme ait olmayan PHP dosyaları. Listeyi almak için bu site, modül her çalıştığında WordPress'in güncelleme sunucusuna (api.wordpress.org) sorar. İstekte WordPress sürümü ile dil paketi ve WordPress'in her isteğine eklediği standart başlık (sürüm ve site adresi) gider. Panele yalnız sayı ve dosya adı iletilir; dosya içeriği sunucudan çıkmaz, hiçbir dosya onarılmaz, değiştirilmez ya da silinmez."
+
+msgid "E-mail delivery"
+msgstr "E-posta teslimi"
+
+msgid "Reads how site e-mail leaves the server (PHP mail, SMTP or a provider API) from the active delivery plugin's settings (WP Mail SMTP, FluentSMTP) and counts sent and failed messages of the last seven days from its log. Transport class and counts only; no address, host, key or subject leaves the server."
+msgstr "Site e-postasının sunucudan nasıl çıktığını (PHP mail, SMTP ya da sağlayıcı API'si) etkin teslim eklentisinin ayarlarından okur (WP Mail SMTP, FluentSMTP) ve eklentinin günlüğünden son yedi günün gönderilen ve başarısız ileti sayılarını alır. Yalnız taşıma türü ve sayı; adres, sunucu adı, anahtar ya da konu sunucudan çıkmaz."
+
+msgid "Cache posture"
+msgstr "Önbellek durumu"
+
+msgid "Which page-cache plugins are active at once, whether the leading one has its page cache switched on, and which plugin owns the advanced-cache.php and object-cache.php drop-ins. Plugin slugs and yes/no only."
+msgstr "Aynı anda hangi sayfa önbelleği eklentilerinin etkin olduğu, öndeki eklentinin sayfa önbelleğinin açık olup olmadığı ve advanced-cache.php ile object-cache.php dosyalarının hangi eklentiye ait olduğu. Yalnız eklenti kısa adı ve evet/hayır."
+
+msgid "Security plugin records"
+msgstr "Güvenlik eklentisi kayıtları"
+
+msgid "Reads the active security plugins' own records (Wordfence, Kadence Security, All-In-One Security, Really Simple Security, Limit Login Attempts Reloaded, Two Factor): open scanner findings and last scan age, firewall mode, how many administrators use two-factor, hardening switches, failed-login counters, and whether several firewalls or login limiters run at once. Counts, yes/no and mode names only; no IP address, user name, file path or key leaves the server."
+msgstr "Etkin güvenlik eklentilerinin kendi kayıtlarını okur (Wordfence, Kadence Security, All-In-One Security, Really Simple Security, Limit Login Attempts Reloaded, Two Factor): açık tarama bulguları ve son taramanın yaşı, güvenlik duvarı modu, iki aşamalı doğrulama kullanan yönetici sayısı, sertleştirme anahtarları, başarısız giriş sayaçları ve aynı anda birden çok güvenlik duvarı ya da giriş sınırlayıcı çalışıp çalışmadığı. Yalnız sayı, evet/hayır ve mod adı; IP adresi, kullanıcı adı, dosya yolu ya da anahtar sunucudan çıkmaz."
+
+msgid "The site is paired. Go back to the Sitetus panel and click \"Verify connection\"."
+msgstr "Site eşleştirildi. Sitetus paneline dönüp \"Bağlantıyı Doğrula\" düğmesine basın."
+
+msgid "That is not a valid pairing code. Copy the whole code from the Sitetus panel and paste it again."
+msgstr "Bu geçerli bir eşleştirme kodu değil. Kodun tamamını Sitetus panelinden kopyalayıp yeniden yapıştırın."
+
+msgid "Module selection saved."
+msgstr "Modül seçimi kaydedildi."
+
+msgid "The site is disconnected. The panel can no longer read it."
+msgstr "Sitenin bağlantısı kesildi. Panel artık siteyi okuyamaz."
+
+msgid "The plugin cannot create its own folder under wp-content (or, failing that, under uploads) to keep its replay-protection record. Fix the folder permissions before pairing."
+msgstr "Eklenti, tekrar-oynatma koruma kaydını tutacağı kendi klasörünü wp-content altında (olmazsa yüklemeler klasöründe) oluşturamıyor. Eşleştirmeden önce klasör izinlerini düzeltin."
+
+msgid "Pair this site"
+msgstr "Bu siteyi eşleştirin"
+
+msgid "In the Sitetus panel open the site, go to the Collector page and copy the pairing code. Paste it here. The code contains no secret: it tells this plugin which panel may read the site and how to verify its signature."
+msgstr "Sitetus panelinde siteyi açın, Toplayıcı sayfasına gidin ve eşleştirme kodunu kopyalayın. Buraya yapıştırın. Kod sır içermez: bu eklentiye hangi panelin siteyi okuyabileceğini ve imzasını nasıl doğrulayacağını söyler."
+
+msgid "Pairing code"
+msgstr "Eşleştirme kodu"
+
+msgid "Pair"
+msgstr "Bağla"
+
+msgid "Connection"
+msgstr "Bağlantı"
+
+msgid "Status"
+msgstr "Durum"
+
+msgid "Paired"
+msgstr "Eşleştirildi"
+
+msgid "Project key"
+msgstr "Proje anahtarı"
+
+msgid "Endpoint"
+msgstr "Uç nokta"
+
+msgid "Last signed request"
+msgstr "Son imzalı istek"
+
+msgid "None yet — click \"Verify connection\" in the panel."
+msgstr "Henüz yok — panelde \"Bağlantıyı Doğrula\" düğmesine basın."
+
+msgid "answered"
+msgstr "yanıtlandı"
+
+msgid "rejected (clock skew or replay)"
+msgstr "reddedildi (saat kayması ya da tekrar)"
+
+msgid "Collector core"
+msgstr "Toplayıcı çekirdeği"
+
+msgid "Panel"
+msgstr "Panel"
+
+msgid "Modules"
+msgstr "Modüller"
+
+msgid "The panel lists which optional read-only modules this site may run; you can narrow the selection here but not widen it."
+msgstr "Panel bu sitenin hangi seçmeli salt-okunur modülleri çalıştırabileceğini belirler; burada seçimi daraltabilir, genişletemezsiniz."
+
+msgid "The panel enabled no optional module for this site."
+msgstr "Panel bu site için seçmeli modül açmadı."
+
+msgid "Save modules"
+msgstr "Modülleri kaydet"
+
+msgid "Disconnect"
+msgstr "Bağlantıyı kes"
+
+msgid "Removes the pairing from this site. The panel then gets a 404 from the endpoint; you can pair again with a new code at any time."
+msgstr "Bu sitedeki eşleştirmeyi kaldırır. Panel uç noktadan 404 alır; istediğiniz zaman yeni bir kodla yeniden eşleştirebilirsiniz."
+
+msgid "Disconnect this site from the Sitetus panel?"
+msgstr "Bu sitenin Sitetus paneliyle bağlantısı kesilsin mi?"
+
+msgid "What this plugin never does"
+msgstr "Bu eklentinin asla yapmadıkları"
+
+msgid "It never sends anything on its own. The panel calls this site with signed requests; unsigned requests get a 404. One optional module, core file integrity, makes this site ask WordPress.org for the official checksum list while it answers such a request; no other module contacts another server."
+msgstr "Kendiliğinden hiçbir şey göndermez. Panel bu siteyi imzalı isteklerle çağırır; imzasız istekler 404 alır. Seçmeli modüllerden biri, çekirdek dosya bütünlüğü, böyle bir isteği yanıtlarken bu sitenin WordPress.org'dan resmî sağlama listesini istemesine yol açar; başka hiçbir modül başka bir sunucuya bağlanmaz."
+
+msgid "It never reads wp-config values, database credentials, salts, user names or e-mail addresses. Configuration is reported as true/false flags only."
+msgstr "wp-config değerlerini, veritabanı kimlik bilgilerini, güvenlik anahtarlarını, kullanıcı adlarını ya da e-posta adreslerini asla okumaz. Yapılandırma yalnız doğru/yanlış bayrakları olarak iletilir."
+
+msgid "It never transmits file contents or log lines. Optional modules report names, dates, sizes and counters."
+msgstr "Dosya içeriği ya da günlük satırı asla iletmez. Seçmeli modüller ad, tarih, boyut ve sayaç bildirir."
+
+msgid "It never changes your content, users, posts, themes or other plugins' data. It writes only its own configuration option, its own last-request option and its replay-protection record; deleting the plugin removes all three."
+msgstr "İçeriğinizi, kullanıcılarınızı, yazılarınızı, temalarınızı ya da başka eklentilerin verilerini asla değiştirmez. Yalnız kendi yapılandırma seçeneğini, kendi son istek seçeneğini ve tekrar-oynatma koruma kaydını yazar; eklenti silindiğinde üçü de kaldırılır."
+
+msgid "It never updates itself or runs code the panel sends; the panel cannot send code."
+msgstr "Kendini güncellemez, panelin gönderdiği kodu çalıştırmaz; panel kod gönderemez."

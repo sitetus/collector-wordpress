@@ -1,0 +1,14 @@
+.git
+.github
+.gitignore
+.distignore
+bin
+dist
+tests
+languages/*.po
+languages/*.pot
+README.md
+phpcs.xml
+composer.json
+composer.lock
+vendor

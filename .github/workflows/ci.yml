@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Lint, tests, zip (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.1', '8.4']
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: sodium, openssl, json, zip
+          coverage: none
+
+      - name: Lint every PHP file
+        run: |
+          set -e
+          for f in $(find . -name '*.php' -not -path './dist/*'); do php -l "$f" > /dev/null; done
+
+      - name: Tests (every tests/*.php, assertions on; smoke envelope kept)
+        run: php bin/test.php --envelope=/tmp/envelope.json
+
+      - name: Build zip
+        run: php bin/build-zip.php

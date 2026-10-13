@@ -1,0 +1,5 @@
+/dist/
+/vendor/
+/languages/*.mo
+Thumbs.db
+.DS_Store
