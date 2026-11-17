@@ -78,7 +78,7 @@ Everything the plugin wrote is removed: its configuration option (the pairing), 
 == Changelog ==
 
 = 0.5.2 =
-* Vendored collector core updated to 0.7.3. The optional file trace module no longer reads the data stored behind `__halt_compiler()` in a PHP file (Wordfence's `wflogs` store, for example), so such a file is judged by its code part only and is not reported as suspicious because of its payload. When the module's directory walk stops at its budget or the content scan at its cap, the envelope now says the scan was partial; the panel then reads "nothing matched" as unknown instead of clean. Nothing else the plugin sends has changed.
+* Vendored collector core updated to 0.7.3. The optional file trace module no longer reads the data stored behind `__halt_compiler()` in a PHP file (Wordfence's `wflogs` store, for example), so such a file is judged by its code part only and is not reported as suspicious because of its payload. The signature scan is separated from the directory walk and starts 200 files further along the list every day, so a site with more PHP files than one request can read is covered within a few days. When the walk stops at its budget or the scan does not reach every file, the envelope says the scan was partial; the panel then reads "nothing matched" as unknown instead of clean. Nothing else the plugin sends has changed.
 
 = 0.5.1 =
 * Vendored collector core updated to 0.7.2: comments and documentation only, no change in behaviour or in what the plugin sends.
