@@ -3,7 +3,7 @@
  * Plugin Name:       Sitetus
  * Plugin URI:        https://sitetus.com
  * Description:       Lets the Sitetus monitoring panel read this site's health, inventory and update status through signed, read-only requests. Nothing leaves the server on its own.
- * Version:           0.5.1
+ * Version:           0.5.2
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Codemarkt

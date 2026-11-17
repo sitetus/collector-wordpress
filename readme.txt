@@ -4,7 +4,7 @@ Tags: monitoring, security, updates, health, inventory
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.1
+Stable tag: 0.5.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,9 @@ No. The plugin contains no code path that changes content, users, posts, themes 
 Everything the plugin wrote is removed: its configuration option (the pairing), its last-request option and the replay-protection record with its folder. The panel then gets a 404 and shows the site as disconnected.
 
 == Changelog ==
+
+= 0.5.2 =
+* Vendored collector core updated to 0.7.3. The optional file trace module no longer reads the data stored behind `__halt_compiler()` in a PHP file (Wordfence's `wflogs` store, for example), so such a file is judged by its code part only and is not reported as suspicious because of its payload. When the module's directory walk stops at its budget or the content scan at its cap, the envelope now says the scan was partial; the panel then reads "nothing matched" as unknown instead of clean. Nothing else the plugin sends has changed.
 
 = 0.5.1 =
 * Vendored collector core updated to 0.7.2: comments and documentation only, no change in behaviour or in what the plugin sends.
