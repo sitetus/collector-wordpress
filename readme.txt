@@ -4,7 +4,7 @@ Tags: monitoring, security, updates, health, inventory
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.3
+Stable tag: 0.5.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,11 @@ No. The plugin contains no code path that changes content, users, posts, themes 
 Everything the plugin wrote is removed: its configuration option (the pairing), its last-request option and the replay-protection record with its folder. The panel then gets a 404 and shows the site as disconnected.
 
 == Changelog ==
+
+= 0.5.4 =
+* Vendored collector core updated to 0.7.6.
+* The optional file scan recognises two more signs of a planted backdoor: a file that runs code it has just read from elsewhere (or includes from a remote address), and a file that calls four or more different command-execution functions while also reading request input. As before, only the file name and the name of the rule are reported, never the file's content.
+* Core 0.7.5's optional application-key check is for Laravel sites and does nothing on WordPress.
 
 = 0.5.3 =
 * Vendored collector core updated to 0.7.4.
