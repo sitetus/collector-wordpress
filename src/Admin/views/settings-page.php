@@ -117,7 +117,7 @@ $notices = [
     <h2><?php echo esc_html__('What this plugin never does', 'sitetus'); ?></h2>
     <ul class="ul-disc">
         <li><?php echo esc_html__('It never sends anything on its own. The panel calls this site with signed requests; unsigned requests get a 404. One optional module, core file integrity, makes this site ask WordPress.org for the official checksum list while it answers such a request; no other module contacts another server.', 'sitetus'); ?></li>
-        <li><?php echo esc_html__('It never reads wp-config values, database credentials, salts, user names or e-mail addresses. Configuration is reported as true/false flags only.', 'sitetus'); ?></li>
+        <li><?php echo esc_html__('It never sends wp-config values, database credentials, salts, user names or e-mail addresses; these never leave your site. Configuration is reported as true/false flags only.', 'sitetus'); ?></li>
         <li><?php echo esc_html__('It never transmits file contents or log lines. Optional modules report names, dates, sizes and counters.', 'sitetus'); ?></li>
         <li><?php echo esc_html__('It never changes your content, users, posts, themes or other plugins\' data. It writes only its own configuration option, its own last-request option and its replay-protection record; deleting the plugin removes all three.', 'sitetus'); ?></li>
         <li><?php echo esc_html__('It never updates itself or runs code the panel sends; the panel cannot send code.', 'sitetus'); ?></li>

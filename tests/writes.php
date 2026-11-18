@@ -68,7 +68,9 @@ $forbiddenCalls = '/(?<![\w>:$])('
     .'|wp_insert_\w+|wp_update_\w+|wp_delete_\w+|wp_trash_\w+|wp_set_\w+|wp_create_\w+|wp_schedule_\w+|wp_cache_(?:set|add|delete|flush)'
     .'|register_setting|switch_theme|activate_plugin|deactivate_plugins|delete_plugins|dbDelta|wp_mail'
     .')\s*\(/';
-$forbiddenQueries = '/->\s*(insert|update|delete|replace|query)\s*\(/';
+// query() is a write channel unless its argument is a literal SELECT (the vendored core's
+// PDO read of CURRENT_USER(), core 0.7.4, which never runs on WordPress).
+$forbiddenQueries = '/->\s*(insert|update|delete|replace|query(?!\s*\(\s*\'SELECT\s))\s*\(/';
 $optionCalls = '/(?<![\w>:$])(update_option|delete_option)\s*\(\s*([^,)]+)/';
 $allowedOptionArguments = ['Plugin::OPTION', 'Plugin::OPTION_LAST_PULL', "'sitetus_collector'", "'sitetus_last_pull'"];
 $scanned = 0;
@@ -273,6 +275,15 @@ $exercise = static function () use ($code, $signedHeaders): void {
 
     $anonymous = CollectEndpoint::handle(new WP_REST_Request([]));
     assert($anonymous->status === 404 && $anonymous->data === null, 'unsigned → bodiless 404');
+
+    // Core 0.7.4: the right project key with a signature that does not verify is refused with the
+    // verifier's own 403 and header, no body — and the unproven caller makes the site write nothing.
+    $tampered = $signedHeaders();
+    $tampered['x_sitetus_nonce'] = bin2hex(random_bytes(16));
+    $writtenBefore = count($GLOBALS['written']);
+    $refused = CollectEndpoint::handle(new WP_REST_Request($tampered));
+    assert($refused->status === 403 && $refused->data === null && $refused->headers === ['X-Sitetus-Error' => 'signature'], 'bad signature → bodiless 403 signature: '.json_encode($refused->headers));
+    assert(count($GLOBALS['written']) === $writtenBefore && Settings::lastPull() === null, 'a refused signature is not recorded as a signed request');
 
     $headers = $signedHeaders();
     $answered = CollectEndpoint::handle(new WP_REST_Request($headers));

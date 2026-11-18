@@ -4,7 +4,7 @@ Tags: monitoring, security, updates, health, inventory
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.2
+Stable tag: 0.5.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -19,7 +19,9 @@ Sitetus is a monitoring platform for websites. This plugin is its read-only coll
 * configuration posture as true/false flags (debug display, file editor, auto-updates, default table prefix, default salts),
 * the number of administrator accounts and whether an account named "admin" exists,
 * core posture read from your own settings: whether registration is open and with which default role, which non-administrator roles hold a dangerous capability (role slugs and capability names only), whether an administrator is missing from the user list, how many administrators carry an application password, the must-use plugin file names and drop-ins present, WP_DEBUG_LOG / SCRIPT_DEBUG / environment type as flags, how far behind WP-Cron is, whether a "coming soon" or maintenance mode (Elementor, SeedProd, WooCommerce launch gate, core .maintenance) hides the site from visitors, and whether one of the common backup plugins is active,
-* PHP and server health (disk usage, php.ini hygiene, OPcache, load),
+* PHP and server health (disk usage, php.ini hygiene, OPcache, load, the Linux distribution's name and version, services listening on every network interface),
+* where the site sits on the server, as yes/no and one word: whether a folder on its path has a web-folder name such as public_html, whether the web server's document root is the WordPress folder, the hosting panel (cPanel, Plesk, DirectAdmin or unknown) and the first 12 characters of a SHA-256 hash of the server account name — never the name or a path,
+* from where the site's database account may connect, as one word (local, any or specific) — the account name and the database host stay on the server,
 * optional modules you switch on: file trace (names, dates, sizes; web-shell signatures scanned locally), archive scan, permissions, AI bot traffic counters,
 * an optional SEO plugin module that reads the records your own SEO plugin keeps (Yoast SEO, Rank Math or All in One SEO): how many published items are set to noindex per post type, which post types are closed to indexing as a whole, how many items receive no internal link, whether the plugin's sitemap and organization settings are filled, and whether more than one SEO plugin is active. Counts and yes/no only — no title, URL, author or keyword leaves the site.
 * three more optional modules (0.4.0): **security plugin records** (Wordfence, Kadence Security, All-In-One Security, Really Simple Security, Limit Login Attempts Reloaded, Two Factor — open issue counts and last-scan age from the plugin's own scanner, firewall mode, administrators covered by two-factor authentication, hardening switches, total login counters; attack logs, IP addresses, user names and vulnerability lists are never read), **mail delivery** (WP Mail SMTP, FluentSMTP — transport class, provider configured, sent/error counts of the last seven days) and **cache posture** (active page-cache plugins, whether page cache is on, which plugin owns advanced-cache.php).
@@ -27,8 +29,8 @@ Sitetus is a monitoring platform for websites. This plugin is its read-only coll
 
 **What the plugin never does**
 
-* It never sends anything on its own. The panel calls this site; unsigned or invalid requests receive a 404 with no body. One optional module, core file integrity, makes the site ask WordPress.org for the official checksum list while it answers such a request (see "External services"); no other module contacts another server.
-* It never reads wp-config values, database credentials, salts, user names or e-mail addresses.
+* It never sends anything on its own. The panel calls this site; unsigned requests receive a 404 with no body, and a request that names your site's project key but fails verification receives a 403 with no body and a one-word reason in a header. One optional module, core file integrity, makes the site ask WordPress.org for the official checksum list while it answers such a request (see "External services"); no other module contacts another server.
+* It never sends wp-config values, database credentials, salts, user names or e-mail addresses; these never leave your site.
 * It never transmits file contents or log lines.
 * It never changes your content, users, posts, themes or other plugins' data. It writes only three things of its own: its configuration option (the pairing and the module choice), its last-request option (when the panel last called and whether the call was answered) and its replay-protection record (a small file, with a web-deny rule beside it, in the plugin's own folder under wp-content). Deleting the plugin removes all three.
 * It never updates itself or runs code the panel sends — the panel cannot send code.
@@ -76,6 +78,14 @@ No. The plugin contains no code path that changes content, users, posts, themes 
 Everything the plugin wrote is removed: its configuration option (the pairing), its last-request option and the replay-protection record with its folder. The panel then gets a 404 and shows the site as disconnected.
 
 == Changelog ==
+
+= 0.5.3 =
+* Vendored collector core updated to 0.7.4.
+* New health row: where the site sits on the server. Four facts only — whether a folder on the site's path is named public_html or private_html, whether the web server's document root is the WordPress folder (normal for WordPress), the hosting panel as one word (cPanel, Plesk, DirectAdmin or unknown) and the first 12 characters of a hash of the server account name, keyed with your site's project key so it means nothing outside this site. The account name itself, paths and the host name stay on the server.
+* New health row: the Linux distribution's name and version (the ID and VERSION_ID lines of /etc/os-release, nothing else), so the panel can tell you when the operating system is past its support period.
+* New health row: from where the site's database account may connect, as one word — local, any or specific — when the database runs on the same server. The plugin asks the database server who it is connected as and keeps only that word; the account name and the database host are never sent.
+* The listening-services row also reports the Docker API (2375) and etcd (2379) when they listen on every network interface; both answer without authentication.
+* Easier troubleshooting of a failed connection: a request that names your site's project key but whose signature cannot be accepted is now answered with a 403 and a one-word reason in a header (the signature did not verify, or the server's PHP lacks the extension needed to verify it) instead of a 404. The answer has no body and carries no secret. Unsigned requests and requests for another project key still get a 404, and the settings page keeps recording only requests whose signature verified.
 
 = 0.5.2 =
 * Vendored collector core updated to 0.7.3. The optional file trace module no longer reads the data stored behind `__halt_compiler()` in a PHP file (Wordfence's `wflogs` store, for example), so such a file is judged by its code part only and is not reported as suspicious because of its payload. The signature scan is separated from the directory walk: files changed in the last 7 days are read on every request, the rest from a start that moves 200 files further along the list every day, so a site with more PHP files than one request can read is covered within a few days. The envelope now names which signature matched each listed file (an identifier only, never content). When the walk stops at its budget or the scan does not reach every file, the envelope says the scan was partial; the panel then reads "nothing matched" as unknown instead of clean. Nothing else the plugin sends has changed.

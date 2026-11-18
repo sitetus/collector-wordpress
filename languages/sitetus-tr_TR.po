@@ -157,8 +157,8 @@ msgstr "Bu eklentinin asla yapmadıkları"
 msgid "It never sends anything on its own. The panel calls this site with signed requests; unsigned requests get a 404. One optional module, core file integrity, makes this site ask WordPress.org for the official checksum list while it answers such a request; no other module contacts another server."
 msgstr "Kendiliğinden hiçbir şey göndermez. Panel bu siteyi imzalı isteklerle çağırır; imzasız istekler 404 alır. Seçmeli modüllerden biri, çekirdek dosya bütünlüğü, böyle bir isteği yanıtlarken bu sitenin WordPress.org'dan resmî sağlama listesini istemesine yol açar; başka hiçbir modül başka bir sunucuya bağlanmaz."
 
-msgid "It never reads wp-config values, database credentials, salts, user names or e-mail addresses. Configuration is reported as true/false flags only."
-msgstr "wp-config değerlerini, veritabanı kimlik bilgilerini, güvenlik anahtarlarını, kullanıcı adlarını ya da e-posta adreslerini asla okumaz. Yapılandırma yalnız doğru/yanlış bayrakları olarak iletilir."
+msgid "It never sends wp-config values, database credentials, salts, user names or e-mail addresses; these never leave your site. Configuration is reported as true/false flags only."
+msgstr "wp-config değerlerini, veritabanı kimlik bilgilerini, güvenlik anahtarlarını, kullanıcı adlarını ya da e-posta adreslerini asla göndermez; bunlar sitenizden dışarı çıkmaz. Yapılandırma yalnız doğru/yanlış bayrakları olarak iletilir."
 
 msgid "It never transmits file contents or log lines. Optional modules report names, dates, sizes and counters."
 msgstr "Dosya içeriği ya da günlük satırı asla iletmez. Seçmeli modüller ad, tarih, boyut ve sayaç bildirir."

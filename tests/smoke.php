@@ -34,7 +34,22 @@ define('SITETUS_PLUGIN_FILE', dirname(__DIR__).'/sitetus.php');
 define('SITETUS_PLUGIN_DIR', dirname(__DIR__));
 
 $GLOBALS['options'] = [];
-$GLOBALS['wpdb'] = (object) ['prefix' => 'wp_'];
+// 0.5.3: the database answers CURRENT_USER() with a name and a host; neither may reach the envelope.
+const SMOKE_DB_USER = 'smoke_secret_account';
+const SMOKE_DB_HOST = 'db7.internal.example';
+$GLOBALS['wpdb'] = new class {
+    public string $prefix = 'wp_';
+
+    public string $dbhost = 'localhost';
+
+    public function get_var(string $query)
+    {
+        assert($query === 'SELECT CURRENT_USER()', 'the only query the smoke run makes: '.$query);
+
+        return SMOKE_DB_USER.'@'.SMOKE_DB_HOST;
+    }
+};
+$_SERVER['DOCUMENT_ROOT'] = $root;
 
 function get_option(string $name, $default = false) { return $GLOBALS['options'][$name] ?? $default; }
 function update_option(string $name, $value, $autoload = null): bool { $GLOBALS['options'][$name] = $value; return true; }
@@ -142,6 +157,33 @@ foreach ($result['body']['health']['checks'] as $check) {
         assert(preg_match('/^[a-z0-9_]{1,64}$/', (string) $key) === 1 && (is_scalar($value) || $value === null) && (! is_string($value) || strlen($value) <= 200), $check['id'].' detail stays flat and bounded');
     }
 }
+
+// 0.5.3 (core 0.7.4): the two new host rows pass the plugin's filter; on WordPress the project
+// root is the document root. The database account row is one word and nothing else.
+$rows = array_column($result['body']['health']['checks'], null, 'id');
+assert(isset($rows['hosting_layout'], $rows['os_release']), 'hosting_layout and os_release are emitted');
+assert($rows['hosting_layout']['status'] === 'ok' && array_keys($rows['hosting_layout']['detail']) === ['project_in_web_folder', 'docroot_is_project_root', 'account_hash', 'panel'], 'hosting_layout carries its four facts: '.json_encode($rows['hosting_layout']));
+assert($rows['hosting_layout']['detail']['docroot_is_project_root'] === true, 'the WordPress root is the document root');
+assert($rows['hosting_layout']['detail']['account_hash'] === null || preg_match('/^[0-9a-f]{12}$/', $rows['hosting_layout']['detail']['account_hash']) === 1, 'account_hash is a 12-character hash prefix');
+assert(in_array($rows['hosting_layout']['detail']['panel'], ['cpanel', 'plesk', 'directadmin', 'unknown'], true), 'panel is a word from the fixed list');
+assert(in_array($rows['os_release']['status'], ['ok', 'unknown'], true), 'os_release answers ok or unknown');
+assert($rows['db_account_scope'] === ['id' => 'db_account_scope', 'status' => 'ok', 'value' => 'specific'], 'db_account_scope is exactly id, status and one word: '.json_encode($rows['db_account_scope'] ?? null));
+
+$wire = (string) json_encode($result['body']);
+assert(stripos($wire, SMOKE_DB_USER) === false && stripos($wire, SMOKE_DB_HOST) === false && strpos($wire, '@') === false, 'neither the database account name nor its host is in the envelope');
+assert(strpos($wire, basename($root)) === false, 'the site path is not in the envelope');
+$processAccount = (string) get_current_user();
+assert($processAccount === '' || stripos((string) json_encode($rows['hosting_layout']), $processAccount) === false, 'the process account name is not in the hosting row');
+
+// Core 0.7.4: a wrong signature under the right project key is explained with a bodiless 403;
+// the verifier's status and headers come through unchanged.
+$tampered = $headers;
+$tampered['x-sitetus-nonce'] = bin2hex(random_bytes(16));
+$refused = Runner::run('GET', $path, $tampered, '', $now);
+assert($refused === ['status' => 403, 'headers' => ['X-Sitetus-Error' => 'signature'], 'body' => null], 'bad signature → bodiless 403 signature: '.json_encode($refused));
+$foreign = $headers;
+$foreign['x-sitetus-key'] = 'anotherproject123456';
+assert(Runner::run('GET', $path, $foreign, '', $now) === ['status' => 404, 'headers' => [], 'body' => null], 'another project key → bodiless 404');
 
 $replay = Runner::run('GET', $path, $headers, '', $now + 5);
 assert($replay['status'] === 403 && $replay['headers']['X-Sitetus-Error'] === 'nonce', 'replay → 403 nonce');

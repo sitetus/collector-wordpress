@@ -11,11 +11,23 @@ use WP_REST_Response;
  * GET /wp-json/sitetus/v1/collect — the endpoint the panel calls. There is
  * no permission callback in the WordPress sense: authorization IS the
  * signature the core verifies (project key + Ed25519/RSA over method,
- * path, timestamp, nonce, body hash). Anything unsigned or invalid gets a
- * 404 with no body, as the single-file collector does.
+ * path, timestamp, nonce, body hash). Anything unsigned, or signed for
+ * another project key, gets a 404 with no body, as the single-file
+ * collector does. A refusal the core explains (403) is passed on as it is:
+ * its status and its fixed X-Sitetus-* headers, no body.
  */
 final class CollectEndpoint
 {
+    /**
+     * The refusals that follow a verified signature. Only these are recorded
+     * as the last signed request: a 403 for a signature that did not verify
+     * (core 0.7.4) comes from a caller that is not proven to be the panel,
+     * and such a caller must not be able to make the site write.
+     *
+     * @var array<int, string>
+     */
+    private const VERIFIED_REFUSALS = ['skew', 'nonce', 'nonce-store'];
+
     public const NAMESPACE = 'sitetus/v1';
 
     public const ROUTE = '/collect';
@@ -65,7 +77,7 @@ final class CollectEndpoint
 
         if ($result['status'] === 200) {
             Settings::recordPull(200);
-        } elseif ($result['status'] === 403) {
+        } elseif ($result['status'] === 403 && in_array($result['headers']['X-Sitetus-Error'] ?? '', self::VERIFIED_REFUSALS, true)) {
             Settings::recordPull(403);
         }
 

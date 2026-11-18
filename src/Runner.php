@@ -20,10 +20,12 @@ final class Runner
 {
     /**
      * Core Level 1 checks that describe the host rather than a Laravel tree.
+     * Core 0.7.4 adds `hosting_layout` (on WordPress the project root is the
+     * document root, which the panel reads as information) and `os_release`.
      *
      * @var array<int, string>
      */
-    public const HOST_CHECK_IDS = ['disk_usage', 'origin_tls_expiry', 'php_ini', 'listening_ports', 'opcache', 'load'];
+    public const HOST_CHECK_IDS = ['disk_usage', 'hosting_layout', 'origin_tls_expiry', 'php_ini', 'listening_ports', 'os_release', 'opcache', 'load'];
 
     /**
      * @param array<string, string> $headers lower-cased header names
@@ -50,7 +52,7 @@ final class Runner
         $root = untrailingslashit(ABSPATH);
         $inventory = new Inventory($config);
         $inventory->rootPath();
-        $health = new Health();
+        $health = new Health($config->projectKey);
 
         // The core's Level 1 list is written for Laravel roots (storage/, bootstrap/cache/,
         // .env, heartbeats); on WordPress those would read as "missing" and mislead. Only the

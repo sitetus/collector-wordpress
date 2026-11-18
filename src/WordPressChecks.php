@@ -2,6 +2,8 @@
 
 namespace Sitetus\WP;
 
+use Sitetus\Collector\Level2;
+
 /**
  * What only WordPress itself can tell: core / plugin / theme update state
  * (from WordPress' own update cache — this plugin never asks wordpress.org),
@@ -12,6 +14,8 @@ namespace Sitetus\WP;
  * backup plugin) lives in CoreChecks and joins the same list.
  *
  * Check ids are prefixed `wp_`; the panel maps them to collector.wp_*.
+ * The one exception is `db_account_scope`, which carries the id the core
+ * uses for the same fact on other frameworks.
  */
 final class WordPressChecks
 {
@@ -22,7 +26,7 @@ final class WordPressChecks
     {
         self::loadAdminFunctions();
 
-        return array_merge([
+        $checks = array_merge([
             self::coreUpdate(),
             self::pluginUpdates(),
             self::themeUpdates(),
@@ -31,6 +35,57 @@ final class WordPressChecks
             self::autoUpdates(),
             self::themes(),
         ], CoreChecks::all());
+
+        $accountScope = self::databaseAccountScope();
+
+        if ($accountScope !== null) {
+            $checks[] = $accountScope;
+        }
+
+        return $checks;
+    }
+
+    /**
+     * From where the site's database account may connect, as one word:
+     * `local`, `any` or `specific` (the core's own classifier, the same row
+     * the Laravel collector sends). The database server's answer to
+     * CURRENT_USER() is reduced on the spot; the account name and the host
+     * never leave the site. No answer, another database engine, a database
+     * on another server or any failure sends no row at all: the panel reads
+     * the row together with this server's own MySQL port.
+     *
+     * @return array{id: string, status: string, value: string}|null
+     */
+    public static function databaseAccountScope(): ?array
+    {
+        global $wpdb;
+
+        if (! is_object($wpdb) || ! method_exists($wpdb, 'get_var') || (isset($wpdb->is_mysql) && ! $wpdb->is_mysql)) {
+            return null;
+        }
+
+        if (! Level2::isLocalDatabaseHost($wpdb->dbhost ?? null)) {
+            return null;
+        }
+
+        $suppressed = method_exists($wpdb, 'suppress_errors') ? $wpdb->suppress_errors(true) : null;
+
+        try {
+            $account = $wpdb->get_var('SELECT CURRENT_USER()');
+            $scope = is_string($account) ? Level2::accountScope($account) : null;
+        } catch (\Throwable $exception) {
+            $scope = null;
+        } finally {
+            if ($suppressed !== null) {
+                $wpdb->suppress_errors((bool) $suppressed);
+            }
+        }
+
+        if (! in_array($scope, ['local', 'any', 'specific'], true)) {
+            return null;
+        }
+
+        return ['id' => 'db_account_scope', 'status' => 'ok', 'value' => $scope];
     }
 
     /**
