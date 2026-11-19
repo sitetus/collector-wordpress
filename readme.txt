@@ -4,7 +4,7 @@ Tags: monitoring, security, updates, health, inventory
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.4
+Stable tag: 0.5.5
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ No. The plugin contains no code path that changes content, users, posts, themes 
 Everything the plugin wrote is removed: its configuration option (the pairing), its last-request option and the replay-protection record with its folder. The panel then gets a 404 and shows the site as disconnected.
 
 == Changelog ==
+
+= 0.5.5 =
+* Vendored collector core updated to 0.7.7.
+* The core's optional application-key check, which never ran on WordPress, is removed; its file is no longer part of the plugin.
 
 = 0.5.4 =
 * Vendored collector core updated to 0.7.6.
