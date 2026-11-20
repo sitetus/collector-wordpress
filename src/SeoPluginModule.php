@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 use Sitetus\WP\Readers\AioseoReader;
 use Sitetus\WP\Readers\PluginReader;
 use Sitetus\WP\Readers\RankMathReader;

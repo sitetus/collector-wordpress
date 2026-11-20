@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 use Sitetus\Collector\Modules\ModuleRunner;
 
 /**

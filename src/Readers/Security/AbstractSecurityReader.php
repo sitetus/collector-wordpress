@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Security;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 use Sitetus\WP\Readers\ReadsPluginStorage;
 
 /**

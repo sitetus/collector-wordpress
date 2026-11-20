@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Mail;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * WP Mail SMTP (wp-mail-smtp; the Pro build lives in wp-mail-smtp-pro
  * with the same option and constant). Storage verified on 4.10.0

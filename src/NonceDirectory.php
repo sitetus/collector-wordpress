@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Where the core's file-based nonce store lives: a private folder under
  * wp-content/uploads (shared across nodes of a multi-server site), denied

@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Mail;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * FluentSMTP (fluent-smtp). Storage verified on 2.4.1 (03.10.2026):
  *  - option fluentmail-settings (absent until the first connection is

@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector\Modules;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Module `archives` — forgotten backups and database dumps inside the
  * web root. Anything under the web root is downloadable by

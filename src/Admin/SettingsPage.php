@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Admin;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 use Sitetus\WP\NonceDirectory;
 use Sitetus\WP\PairingCode;
 use Sitetus\WP\Plugin;
@@ -59,7 +63,7 @@ final class SettingsPage
     {
         self::guard('sitetus_pair');
 
-        $code = isset($_POST['pairing_code']) ? (string) wp_unslash($_POST['pairing_code']) : '';
+        $code = isset($_POST['pairing_code']) ? sanitize_text_field((string) wp_unslash($_POST['pairing_code'])) : '';
         $payload = PairingCode::decode($code);
 
         if ($payload === null) {

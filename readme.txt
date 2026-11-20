@@ -4,11 +4,11 @@ Tags: monitoring, security, updates, health, inventory
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.5
+Stable tag: 0.5.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Lets the Sitetus monitoring panel read this site's health, update status and inventory through signed, read-only requests. Nothing leaves the server on its own.
+Read-only collector for the Sitetus monitoring panel: health, updates and inventory through signed requests. Nothing leaves the server on its own.
 
 == Description ==
 
@@ -45,7 +45,13 @@ The pairing code contains the panel's public key, an identifier for the site and
 
 == External services ==
 
-The plugin exposes one REST endpoint (`/wp-json/sitetus/v1/collect`) that only the Sitetus panel you paired can use: every request must carry a valid signature made with the panel's private key, which never leaves the panel. The data described above is returned to that panel in response to its requests; see https://sitetus.com for the panel's terms and privacy policy.
+The plugin exposes one REST endpoint (`/wp-json/sitetus/v1/collect`) that only the Sitetus panel you paired can use: every request must carry a valid signature made with the panel's private key, which never leaves the panel. The data described above is returned to that panel in response to its requests.
+
+* Service: the Sitetus panel (https://sitetus.com), the monitoring service you pair the site with. An account there is needed to use the plugin.
+* When: only when the panel sends a signed request, a few times a day or when you ask for a check in the panel.
+* What is sent: the read-only data listed under "Description", as the answer to that request. The plugin never opens a connection to the panel itself.
+* Terms of use: https://sitetus.com/legal/kullanim-sartlari
+* Privacy policy: https://sitetus.com/legal/gizlilik-politikasi
 
 With every optional module but one, the plugin connects to no external service. The exception is the **core file integrity** module. It is off unless you choose it: the panel offers it unticked when you create a pairing code, a pairing code that does not list it leaves it off, and on Settings → Sitetus you can switch it on or off at any time. On a site that was paired before version 0.5.0 it stays off until you select it there.
 
@@ -78,6 +84,11 @@ No. The plugin contains no code path that changes content, users, posts, themes 
 Everything the plugin wrote is removed: its configuration option (the pairing), its last-request option and the replay-protection record with its folder. The panel then gets a 404 and shows the site as disconnected.
 
 == Changelog ==
+
+= 0.5.6 =
+* Every PHP file of the plugin refuses to run when it is opened directly, outside WordPress.
+* The pairing code field is sanitized before it is read.
+* The readme names the panel as the external service the plugin answers to, with links to its terms of use and privacy policy.
 
 = 0.5.5 =
 * Vendored collector core updated to 0.7.7.

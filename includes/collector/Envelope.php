@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Envelope assembly. Section absence is never an error; the panel
  * shows "no data". Extensions are reported from an allowlist only.

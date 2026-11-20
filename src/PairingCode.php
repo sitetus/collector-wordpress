@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Decodes and validates the pairing code the panel shows on the site's
  * Toplayıcı page: base64url JSON with the install's public identity. The

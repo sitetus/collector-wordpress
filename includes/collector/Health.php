@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Level 1 health checks: numbers, statuses and flags only —
  * never raw logs, paths, usernames or connection strings. Messages are keys

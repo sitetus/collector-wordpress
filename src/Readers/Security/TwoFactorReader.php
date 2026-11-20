@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Security;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Two Factor (two-factor, the WordPress community plugin). Storage
  * verified on 0.17.0 (03.10.2026): usermeta _two_factor_enabled_providers

@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * File-based nonce store: flock'ed JSON, replay window pruning,
  * capped at the most recent 1000 entries, plus the last-valid-request

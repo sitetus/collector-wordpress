@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Security;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Kadence Security, formerly Solid / iThemes Security (better-wp-security).
  * Storage verified on 10.0.5 (03.10.2026):

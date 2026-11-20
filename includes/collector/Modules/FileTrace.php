@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector\Modules;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Module `files` — file integrity and web-shell trace. Read-only,
  * stat-based:

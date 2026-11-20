@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector\Modules;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Module `bot_traffic` — did the AI crawlers actually come?
  * Reads the TAIL of the newest readable web-server access log (≤ 20 MB,

@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Yoast SEO (wordpress-seo). Storage verified on 28.6 (02.10.2026):
  *  - {prefix}yoast_indexable: one row per object; object_type 'post',

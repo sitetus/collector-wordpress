@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 use Sitetus\WP\Readers\Mail\AbstractMailReader;
 use Sitetus\WP\Readers\Mail\FluentSmtpReader;
 use Sitetus\WP\Readers\Mail\MailReader;

@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Security;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * All-In-One Security (all-in-one-wp-security-and-firewall). Storage
  * verified on 5.4.10 (03.10.2026): one option, aio_wp_security_configs,

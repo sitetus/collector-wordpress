@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector\Modules;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Module `permissions` — world-writable files and directories in the
  * project root. Writable-by-design trees

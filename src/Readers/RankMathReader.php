@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Rank Math SEO (seo-by-rank-math). Storage verified on 1.0.279 (02.10.2026):
  *  - post meta rank_math_robots: serialized array of robots tokens

@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * The reader helpers that are not specific to SEO plugins: plugin
  * activity and version from WordPress' plugin list (or the plugin's own

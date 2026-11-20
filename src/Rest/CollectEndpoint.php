@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Rest;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 use Sitetus\WP\Runner;
 use Sitetus\WP\Settings;
 use WP_REST_Request;

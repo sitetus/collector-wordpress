@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Mail;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 use Sitetus\WP\Readers\ReadsPluginStorage;
 
 /**

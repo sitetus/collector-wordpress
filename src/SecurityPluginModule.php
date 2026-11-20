@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 use Sitetus\WP\Readers\ReadBudget;
 use Sitetus\WP\Readers\Security\AiosReader;
 use Sitetus\WP\Readers\Security\KadenceSecurityReader;

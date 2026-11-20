@@ -2,11 +2,17 @@
 
 /**
  * Copies the collector core (sitetus/collector src/) into includes/collector/
- * unchanged — same namespaces, same files — so the plugin answers with the
+ * — same namespaces, same files, same code — so the plugin answers with the
  * exact envelope the single file and the Composer wrapper produce.
+ *
+ * One line group is added to each copy: the direct-access guard the
+ * WordPress.org plugin directory asks of every PHP file. The core itself
+ * runs outside WordPress and cannot carry it.
  *
  * Usage: php bin/sync-core.php [path-to-sitetus-collector]
  */
+
+const SITETUS_DIRECT_ACCESS_GUARD = "\n\nif (! defined('ABSPATH')) {\n    exit;\n}";
 
 $source = rtrim($argv[1] ?? dirname(__DIR__, 2).'/sitetus-collector', '/\\');
 $target = dirname(__DIR__).'/includes/collector';
@@ -33,7 +39,15 @@ foreach ($files as $relative) {
         mkdir(dirname($destination), 0775, true);
     }
 
-    copy($source.'/src/'.$relative, $destination);
+    $code = str_replace("\r\n", "\n", (string) file_get_contents($source.'/src/'.$relative));
+    $guarded = preg_replace('/^(namespace [^;]+;)$/m', '$1'.SITETUS_DIRECT_ACCESS_GUARD, $code, 1, $count);
+
+    if ($count !== 1 || ! is_string($guarded)) {
+        fwrite(STDERR, "No namespace line to put the guard after: {$relative}\n");
+        exit(1);
+    }
+
+    file_put_contents($destination, $guarded);
 }
 
 $version = 'unknown';

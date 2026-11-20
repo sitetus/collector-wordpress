@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * All in One SEO (all-in-one-seo-pack). Storage verified on 5.0.2.1 (02.10.2026):
  *  - {prefix}aioseo_posts: one row per post edited under the plugin;

@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Security;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Wordfence (wordfence). Storage verified on 9.0.2 (03.10.2026):
  *  - {prefix}wfconfig (lower-cased table name since the 7.5 case

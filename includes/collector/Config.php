@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Embedded installation configuration. Contains NO secrets: the public key
  * verifies the panel's signatures, project_key is an identifier,

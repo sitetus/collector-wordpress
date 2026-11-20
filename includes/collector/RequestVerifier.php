@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Verification order and responses (binding):
  *  1. a signature header missing / project_key mismatch         → 404

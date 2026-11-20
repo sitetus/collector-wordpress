@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Security;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Really Simple Security, formerly Really Simple SSL (really-simple-ssl).
  * Storage verified on 9.8.3 (03.10.2026): one array option, rsssl_options

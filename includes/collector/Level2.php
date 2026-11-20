@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Level 2: Laravel bootstrap AFTER signature verification only.
  * Guarded with try/catch, output buffering, display_errors off and a time

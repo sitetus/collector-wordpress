@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Level 1 project inventory: project root discovery, framework
  * detection by file signatures, composer package inventory from

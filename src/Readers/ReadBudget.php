@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * The wall-clock budget one module run may spend on database reads. A
  * query is only sent while the budget is open; once it is exhausted the

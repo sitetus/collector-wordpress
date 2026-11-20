@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Mail;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * One third-party mail delivery plugin as the mail_delivery module sees
  * it. A reader answers which plugin, is it active, do I know this

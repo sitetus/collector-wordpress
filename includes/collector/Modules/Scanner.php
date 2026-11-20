@@ -2,6 +2,10 @@
 
 namespace Sitetus\Collector\Modules;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Bounded, read-only directory walk shared by the opt-in modules.
  * Every walk has an entry budget, a depth cap and a wall-clock

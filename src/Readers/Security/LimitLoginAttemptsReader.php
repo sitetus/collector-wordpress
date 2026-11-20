@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Security;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Limit Login Attempts Reloaded (limit-login-attempts-reloaded). Storage
  * verified on 3.3.10 (03.10.2026): options with the limit_login_ prefix —

@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * Backup plugins the wp_backup_plugin row looks for (panel decision 9,
  * 03.10.2026): the site only reports whether one of them is active and

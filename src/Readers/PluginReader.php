@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * One third-party SEO plugin as the seo_plugin module sees it. A reader
  * answers four questions and nothing else: which plugin, is it active,

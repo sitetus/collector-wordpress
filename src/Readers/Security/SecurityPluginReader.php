@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers\Security;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * One third-party security plugin as the security_plugin module sees it.
  * The SEO contract (PluginReader) takes the public post types because

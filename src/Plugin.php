@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 use Sitetus\WP\Admin\SettingsPage;
 use Sitetus\WP\Rest\CollectEndpoint;
 

@@ -2,6 +2,10 @@
 
 namespace Sitetus\WP\Readers;
 
+if (! defined('ABSPATH')) {
+    exit;
+}
+
 /**
  * What every reader shares: plugin activity and version from WordPress'
  * plugin list (or the plugin's own version constant), option reading,
