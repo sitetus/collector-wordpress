@@ -138,6 +138,7 @@ function restore_current_blog(): bool { $GLOBALS['blog'] = array_pop($GLOBALS['b
 function wp_upload_dir($time = null, bool $create = true): array { return ['basedir' => ABSPATH.'wp-content/uploads'.($GLOBALS['blog'] > 1 ? '/sites/'.$GLOBALS['blog'] : '')]; }
 function untrailingslashit(string $value): string { return rtrim($value, '/\\'); }
 function wp_unslash($value) { return $value; }
+function wp_parse_url(string $url, int $component = -1) { return parse_url($url, $component); }
 function wp_mkdir_p(string $path): bool { return is_dir($path) || mkdir($path, 0777, true); }
 function wp_is_writable(string $path): bool { return is_writable($path); }
 function get_bloginfo(string $show): string { return $show === 'version' ? '6.6.2' : ''; }

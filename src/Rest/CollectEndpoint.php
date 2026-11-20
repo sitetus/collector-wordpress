@@ -57,7 +57,7 @@ final class CollectEndpoint
         // The signed path is the request path as the server saw it: the pretty
         // route or "/" for the ?rest_route= form (the panel signs the same thing).
         $uri = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '/';
-        $path = (string) parse_url($uri, PHP_URL_PATH);
+        $path = (string) wp_parse_url($uri, PHP_URL_PATH);
         $body = (string) $request->get_body();
 
         // No PHP diagnostics may reach the response (core 0.5.1 does the same in handle()).
