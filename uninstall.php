@@ -10,6 +10,11 @@ if (! defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
+if (! class_exists('WP_Filesystem_Direct', false)) {
+    require_once ABSPATH.'wp-admin/includes/class-wp-filesystem-base.php';
+    require_once ABSPATH.'wp-admin/includes/class-wp-filesystem-direct.php';
+}
+
 $sitetusCleanUp = static function (): void {
     delete_option('sitetus_collector');
     delete_option('sitetus_last_pull');
@@ -23,14 +28,15 @@ $sitetusCleanUp = static function (): void {
         }
 
         foreach ((array) glob($directory.'/.sitetus-*.json') as $file) {
-            @unlink($file);
+            wp_delete_file($file);
         }
 
         foreach (['.htaccess', 'index.php'] as $guard) {
-            @unlink($directory.'/'.$guard);
+            wp_delete_file($directory.'/'.$guard);
         }
 
-        @rmdir($directory);
+        // The direct class: the folder was made by PHP itself, so no FTP or SSH credentials are involved.
+        (new WP_Filesystem_Direct(null))->rmdir($directory);
     }
 };
 

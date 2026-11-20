@@ -53,7 +53,7 @@ final class NonceDirectory
             @file_put_contents($path.'/.htaccess', "Require all denied\nDeny from all\n");
         }
 
-        return is_writable($path);
+        return wp_is_writable($path);
     }
 
     /**
@@ -71,14 +71,30 @@ final class NonceDirectory
             }
 
             foreach ((array) glob($path.'/.sitetus-*.json') as $file) {
-                @unlink($file);
+                wp_delete_file($file);
             }
 
             foreach (['.htaccess', 'index.php'] as $guard) {
-                @unlink($path.'/'.$guard);
+                wp_delete_file($path.'/'.$guard);
             }
 
-            @rmdir($path);
+            self::removeIfEmpty($path);
         }
+    }
+
+    /**
+     * Removes the folder with WordPress' direct filesystem class; a folder
+     * that still holds something stays. The class is used directly because
+     * the folder was made by PHP itself (wp_mkdir_p), so no FTP or SSH
+     * credentials are involved on any host.
+     */
+    private static function removeIfEmpty(string $path): void
+    {
+        if (! class_exists('WP_Filesystem_Direct', false)) {
+            require_once ABSPATH.'wp-admin/includes/class-wp-filesystem-base.php';
+            require_once ABSPATH.'wp-admin/includes/class-wp-filesystem-direct.php';
+        }
+
+        (new \WP_Filesystem_Direct(null))->rmdir($path);
     }
 }

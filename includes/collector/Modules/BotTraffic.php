@@ -6,6 +6,8 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fread, WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Reads the tail of an access log line by line, read-only; WP_Filesystem can only load a whole file into memory.
+
 /**
  * Module `bot_traffic` — did the AI crawlers actually come?
  * Reads the TAIL of the newest readable web-server access log (≤ 20 MB,

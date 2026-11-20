@@ -50,6 +50,7 @@ final class SettingsPage
 
         $settings = Settings::get();
         $lastPull = Settings::lastPull();
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Display only: the key picks one of four fixed notices after a redirect and changes nothing.
         $notice = isset($_GET['sitetus']) ? sanitize_key((string) wp_unslash($_GET['sitetus'])) : '';
         $nonceDirWritable = NonceDirectory::ensure();
         $moduleLabels = self::moduleLabels();
@@ -61,18 +62,19 @@ final class SettingsPage
 
     public static function pair(): void
     {
-        self::guard('sitetus_pair');
+        self::requireCapability();
+        check_admin_referer('sitetus_pair');
 
-        $code = isset($_POST['pairing_code']) ? sanitize_text_field((string) wp_unslash($_POST['pairing_code'])) : '';
+        $code = isset($_POST['pairing_code']) ? sanitize_text_field(wp_unslash($_POST['pairing_code'])) : '';
         $payload = PairingCode::decode($code);
 
         if ($payload === null) {
             self::back('invalid_code');
         }
 
-        $modules = self::postedModules();
+        $posted = isset($_POST['modules']) && is_array($_POST['modules']) ? array_map('sanitize_key', wp_unslash($_POST['modules'])) : [];
 
-        Settings::pair($payload, $modules === null ? $payload['modules'] : $modules);
+        Settings::pair($payload, isset($_POST['modules_present']) ? self::knownModules($posted) : $payload['modules']);
         NonceDirectory::ensure();
 
         self::back('paired');
@@ -80,16 +82,20 @@ final class SettingsPage
 
     public static function modules(): void
     {
-        self::guard('sitetus_modules');
+        self::requireCapability();
+        check_admin_referer('sitetus_modules');
 
-        Settings::updateModules(self::postedModules() ?? []);
+        $posted = isset($_POST['modules']) && is_array($_POST['modules']) ? array_map('sanitize_key', wp_unslash($_POST['modules'])) : [];
+
+        Settings::updateModules(self::knownModules($posted));
 
         self::back('modules_saved');
     }
 
     public static function unpair(): void
     {
-        self::guard('sitetus_unpair');
+        self::requireCapability();
+        check_admin_referer('sitetus_unpair');
 
         Settings::unpair();
 
@@ -141,28 +147,21 @@ final class SettingsPage
         ];
     }
 
-    private static function guard(string $action): void
+    private static function requireCapability(): void
     {
         if (! current_user_can(self::CAPABILITY)) {
             wp_die(esc_html__('You do not have permission to manage this page.', 'sitetus'), '', ['response' => 403]);
         }
-
-        check_admin_referer($action);
     }
 
     /**
-     * @return array<int, string>|null null when the form carried no module field at all
+     * @param array<int|string, mixed> $posted
+     * @return array<int, string>
      */
-    private static function postedModules(): ?array
+    private static function knownModules(array $posted): array
     {
-        if (! isset($_POST['modules_present'])) {
-            return null;
-        }
-
-        $posted = isset($_POST['modules']) && is_array($_POST['modules']) ? wp_unslash($_POST['modules']) : [];
-
-        return array_values(array_filter(array_map('sanitize_key', $posted), static function (string $module): bool {
-            return in_array($module, Settings::MODULES, true);
+        return array_values(array_filter($posted, static function ($module): bool {
+            return is_string($module) && in_array($module, Settings::MODULES, true);
         }));
     }
 

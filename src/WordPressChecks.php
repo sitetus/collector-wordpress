@@ -2,7 +2,7 @@
 
 namespace Sitetus\WP;
 
-use Sitetus\Collector\Level2;
+use Sitetus\Collector\DatabaseAccount;
 
 /**
  * What only WordPress itself can tell: core / plugin / theme update state
@@ -64,15 +64,16 @@ final class WordPressChecks
             return null;
         }
 
-        if (! Level2::isLocalDatabaseHost($wpdb->dbhost ?? null)) {
+        if (! DatabaseAccount::isLocalHost($wpdb->dbhost ?? null)) {
             return null;
         }
 
         $suppressed = method_exists($wpdb, 'suppress_errors') ? $wpdb->suppress_errors(true) : null;
 
         try {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- A fixed statement with no input, read once per signed pull; WordPress has no function for the connected account.
             $account = $wpdb->get_var('SELECT CURRENT_USER()');
-            $scope = is_string($account) ? Level2::accountScope($account) : null;
+            $scope = is_string($account) ? DatabaseAccount::scope($account) : null;
         } catch (\Throwable $exception) {
             $scope = null;
         } finally {
@@ -312,6 +313,7 @@ final class WordPressChecks
     private static function autoUpdates(): array
     {
         $updaterDisabled = defined('AUTOMATIC_UPDATER_DISABLED') && AUTOMATIC_UPDATER_DISABLED;
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- WordPress core's own filter, applied only to read the setting in effect.
         $coreMinor = ! $updaterDisabled && (bool) apply_filters('allow_minor_auto_core_updates', true);
         $plugins = function_exists('wp_is_auto_update_enabled_for_type') && wp_is_auto_update_enabled_for_type('plugin');
         $themes = function_exists('wp_is_auto_update_enabled_for_type') && wp_is_auto_update_enabled_for_type('theme');

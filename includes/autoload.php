@@ -1,7 +1,7 @@
 <?php
 /**
  * PSR-4 autoloader for the plugin (no Composer in the distributed zip):
- * Sitetus\Collector\* → includes/collector (the vendored core, unchanged),
+ * Sitetus\Collector\* → includes/collector (the vendored core, copied by bin/sync-core.php),
  * Sitetus\WP\*        → src.
  */
 

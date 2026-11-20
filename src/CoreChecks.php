@@ -177,12 +177,14 @@ final class CoreChecks
         $metaCount = null;
 
         if (is_object($wpdb) && method_exists($wpdb, 'prepare') && method_exists($wpdb, 'get_var')) {
-            $prepared = $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s",
-                $wpdb->prefix.'capabilities',
-                '%"administrator"%'
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Read once per signed pull; the count must be the row count itself, which no WordPress function returns past pre_user_query filters.
+            $value = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_key = %s AND meta_value LIKE %s",
+                    $wpdb->prefix.'capabilities',
+                    '%"administrator"%'
+                )
             );
-            $value = is_string($prepared) ? $wpdb->get_var($prepared) : null;
             $metaCount = is_numeric($value) ? max(0, (int) $value) : null;
         }
 

@@ -152,12 +152,14 @@ trait ReadsPluginStorage
         }
 
         $wpdb = $this->wpdb();
+        // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is a statement written in this plugin (only the table name, built from $wpdb->prefix and a fixed suffix, is interpolated); every value is a placeholder filled from $params.
         $prepared = $params === [] ? $sql : $wpdb->prepare($sql, ...$params);
 
         if (! is_string($prepared)) {
             return null;
         }
 
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Prepared just above; read-only, once per signed pull, from another plugin's own table that WordPress has no function for.
         $value = $wpdb->get_var($prepared);
 
         return is_scalar($value) ? (string) $value : null;

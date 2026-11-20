@@ -65,12 +65,11 @@ $forbiddenCalls = '/(?<![\w>:$])('
     .'add_option|update_site_option|add_site_option|delete_site_option|update_network_option|add_network_option|delete_network_option'
     .'|set_transient|set_site_transient|delete_transient|delete_site_transient'
     .'|(?:update|add|delete)_(?:user|post|term|comment|site)_meta|(?:update|add|delete)_metadata'
-    .'|wp_insert_\w+|wp_update_\w+|wp_delete_\w+|wp_trash_\w+|wp_set_\w+|wp_create_\w+|wp_schedule_\w+|wp_cache_(?:set|add|delete|flush)'
+    // wp_delete_file() is not a content write: it removes a file, and part 3 holds it to the plugin's own record.
+    .'|wp_insert_\w+|wp_update_\w+|wp_delete_(?!file\s*\()\w+|wp_trash_\w+|wp_set_\w+|wp_create_\w+|wp_schedule_\w+|wp_cache_(?:set|add|delete|flush)'
     .'|register_setting|switch_theme|activate_plugin|deactivate_plugins|delete_plugins|dbDelta|wp_mail'
     .')\s*\(/';
-// query() is a write channel unless its argument is a literal SELECT (the vendored core's
-// PDO read of CURRENT_USER(), core 0.7.4, which never runs on WordPress).
-$forbiddenQueries = '/->\s*(insert|update|delete|replace|query(?!\s*\(\s*\'SELECT\s))\s*\(/';
+$forbiddenQueries = '/->\s*(insert|update|delete|replace|query)\s*\(/';
 $optionCalls = '/(?<![\w>:$])(update_option|delete_option)\s*\(\s*([^,)]+)/';
 $allowedOptionArguments = ['Plugin::OPTION', 'Plugin::OPTION_LAST_PULL', "'sitetus_collector'", "'sitetus_last_pull'"];
 $scanned = 0;
@@ -141,6 +140,17 @@ function wp_unslash($value) { return $value; }
 function wp_parse_url(string $url, int $component = -1) { return parse_url($url, $component); }
 function wp_mkdir_p(string $path): bool { return is_dir($path) || mkdir($path, 0777, true); }
 function wp_is_writable(string $path): bool { return is_writable($path); }
+function wp_delete_file(string $file): void { if (is_file($file)) { unlink($file); } }
+// WordPress' direct filesystem class: rmdir() removes an empty folder and leaves any other.
+final class WP_Filesystem_Direct
+{
+    public function __construct($arg) {}
+
+    public function rmdir(string $path, bool $recursive = false): bool
+    {
+        return @rmdir($path);
+    }
+}
 function get_bloginfo(string $show): string { return $show === 'version' ? '6.6.2' : ''; }
 function get_site_transient(string $name) { return false; }
 // core_integrity (0.5.0) really compares here: one official file present and changed, one missing.

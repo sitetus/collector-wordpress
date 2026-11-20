@@ -197,11 +197,15 @@ final class SeoPluginModule
         }
 
         $wpdb = $GLOBALS['wpdb'];
-        $sql = $wpdb->prepare(
-            "SELECT post_type AS type, COUNT(*) AS n FROM {$wpdb->prefix}posts WHERE post_status = 'publish' AND post_type IN (".implode(', ', array_fill(0, count($postTypes), '%s')).') GROUP BY post_type',
-            ...$postTypes
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- One grouped, read-only count per signed pull. The only part built in code is the list of %s placeholders, one per post type; every post type is passed as a value.
+        $rows = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT post_type AS type, COUNT(*) AS n FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type IN (".implode(', ', array_fill(0, count($postTypes), '%s')).') GROUP BY post_type',
+                ...$postTypes
+            ),
+            'ARRAY_A'
         );
-        $rows = is_string($sql) ? $wpdb->get_results($sql, 'ARRAY_A') : null;
+        // phpcs:enable
 
         if (! is_array($rows)) {
             return $counts;

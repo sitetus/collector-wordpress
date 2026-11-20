@@ -6,6 +6,8 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_is_writable, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash -- This file is shared with the collectors that run outside WordPress. The two server values are only compared (a path prefix, a certificate name) and are never stored or printed.
+
 /**
  * Level 1 health checks: numbers, statuses and flags only —
  * never raw logs, paths, usernames or connection strings. Messages are keys

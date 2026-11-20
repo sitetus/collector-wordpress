@@ -32,6 +32,8 @@ final class FakeWpdb
 {
     public string $prefix = 'wp_';
 
+    public string $posts = 'wp_posts';
+
     /** @var array<int, array{0: string, 1: mixed}> */
     public array $answers = [];
 

@@ -56,13 +56,18 @@ final class CollectEndpoint
 
         // The signed path is the request path as the server saw it: the pretty
         // route or "/" for the ?rest_route= form (the panel signs the same thing).
+        // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- The path is part of the signed message and is only compared; a sanitizer that rewrote it would break the signature check.
         $uri = isset($_SERVER['REQUEST_URI']) ? (string) wp_unslash($_SERVER['REQUEST_URI']) : '/';
         $path = (string) wp_parse_url($uri, PHP_URL_PATH);
         $body = (string) $request->get_body();
 
-        // No PHP diagnostics may reach the response (core 0.5.1 does the same in handle()).
+        // No PHP diagnostics may reach the response: a warning printed into the body
+        // would break the JSON the panel reads and could name a path on this server.
+        // Both settings are put back as they were once the response is built.
         $previousDisplay = @ini_get('display_errors');
+        // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged, PluginCheck.CodeAnalysis.PHPErrorReporting.IniDirectiveDisplay_errors -- For this one response only, restored in the finally block below.
         @ini_set('display_errors', '0');
+        // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler -- Not debug code: keeps warnings out of the response, restored in the finally block below.
         set_error_handler(static function (): bool {
             return true;
         });
@@ -76,6 +81,7 @@ final class CollectEndpoint
             }
 
             restore_error_handler();
+            // phpcs:ignore Squiz.PHP.DiscouragedFunctions.Discouraged, PluginCheck.CodeAnalysis.PHPErrorReporting.IniDirectiveDisplay_errors -- Puts back the value read before the request was handled.
             @ini_set('display_errors', (string) $previousDisplay);
         }
 

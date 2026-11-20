@@ -4,7 +4,7 @@ Tags: monitoring, security, updates, health, inventory
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 0.5.6
+Stable tag: 0.5.7
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,12 @@ No. The plugin contains no code path that changes content, users, posts, themes 
 Everything the plugin wrote is removed: its configuration option (the pairing), its last-request option and the replay-protection record with its folder. The panel then gets a 404 and shows the site as disconnected.
 
 == Changelog ==
+
+= 0.5.7 =
+* Changes made after running the Plugin Check tool. What the plugin reads and sends is unchanged.
+* The plugin's own files are removed with WordPress' file functions (`wp_delete_file`, `WP_Filesystem`) when the site is disconnected or the plugin is deleted.
+* The settings forms verify their nonce in the same function that reads the form.
+* Vendored collector core updated to 0.7.8. Two core files the plugin never loaded (the standalone request front and the Laravel bootstrap) are no longer part of the plugin.
 
 = 0.5.6 =
 * Every PHP file of the plugin refuses to run when it is opened directly, outside WordPress.

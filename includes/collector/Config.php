@@ -13,7 +13,7 @@ if (! defined('ABSPATH')) {
  */
 final class Config
 {
-    public const VERSION = '0.7.7';
+    public const VERSION = '0.7.8';
 
     public const SCHEMA_VERSION = 1;
 

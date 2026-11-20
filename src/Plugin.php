@@ -36,6 +36,7 @@ final class Plugin
 
     public static function loadTextDomain(): void
     {
+        // phpcs:ignore PluginCheck.CodeAnalysis.DiscouragedFunctions.load_plugin_textdomainFound -- The zip is also installed by upload from the panel; those sites have no language pack and read the bundled translation.
         load_plugin_textdomain(self::TEXT_DOMAIN, false, dirname(plugin_basename(SITETUS_PLUGIN_FILE)).'/languages');
     }
 

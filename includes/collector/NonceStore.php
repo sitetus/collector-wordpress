@@ -6,6 +6,8 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fwrite, WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Replay protection needs one file handle held under flock() from read to write; WP_Filesystem has no locking.
+
 /**
  * File-based nonce store: flock'ed JSON, replay window pruning,
  * capped at the most recent 1000 entries, plus the last-valid-request

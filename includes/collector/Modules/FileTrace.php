@@ -6,6 +6,8 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+// phpcs:disable WordPress.WP.AlternativeFunctions.file_system_operations_fopen, WordPress.WP.AlternativeFunctions.file_system_operations_fread, WordPress.WP.AlternativeFunctions.file_system_operations_fclose -- Reads only the first and last bytes of a file, read-only; WP_Filesystem can only load a whole file into memory.
+
 /**
  * Module `files` — file integrity and web-shell trace. Read-only,
  * stat-based:

@@ -8,7 +8,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-$notices = [
+$sitetusNotices = [
     'paired' => ['success', __('The site is paired. Go back to the Sitetus panel and click "Verify connection".', 'sitetus')],
     'invalid_code' => ['error', __('That is not a valid pairing code. Copy the whole code from the Sitetus panel and paste it again.', 'sitetus')],
     'modules_saved' => ['success', __('Module selection saved.', 'sitetus')],
@@ -18,8 +18,8 @@ $notices = [
 <div class="wrap">
     <h1><?php echo esc_html__('Sitetus', 'sitetus'); ?></h1>
 
-    <?php if ($notice !== '' && isset($notices[$notice])) : ?>
-        <div class="notice notice-<?php echo esc_attr($notices[$notice][0]); ?> is-dismissible"><p><?php echo esc_html($notices[$notice][1]); ?></p></div>
+    <?php if ($notice !== '' && isset($sitetusNotices[$notice])) : ?>
+        <div class="notice notice-<?php echo esc_attr($sitetusNotices[$notice][0]); ?> is-dismissible"><p><?php echo esc_html($sitetusNotices[$notice][1]); ?></p></div>
     <?php endif; ?>
 
     <?php if (! $nonceDirWritable) : ?>
@@ -90,12 +90,12 @@ $notices = [
             <input type="hidden" name="action" value="sitetus_modules">
             <input type="hidden" name="modules_present" value="1">
             <fieldset>
-                <?php foreach ((array) ($settings['modules_allowed'] ?? []) as $module) : ?>
-                    <?php if (! isset($moduleLabels[$module])) { continue; } ?>
+                <?php foreach ((array) ($settings['modules_allowed'] ?? []) as $sitetusModule) : ?>
+                    <?php if (! isset($moduleLabels[$sitetusModule])) { continue; } ?>
                     <label style="display:block;margin:6px 0;">
-                        <input type="checkbox" name="modules[]" value="<?php echo esc_attr($module); ?>" <?php checked(in_array($module, (array) ($settings['modules'] ?? []), true)); ?>>
-                        <strong><?php echo esc_html($moduleLabels[$module]['label']); ?></strong>
-                        <span class="description"> — <?php echo esc_html($moduleLabels[$module]['description']); ?></span>
+                        <input type="checkbox" name="modules[]" value="<?php echo esc_attr($sitetusModule); ?>" <?php checked(in_array($sitetusModule, (array) ($settings['modules'] ?? []), true)); ?>>
+                        <strong><?php echo esc_html($moduleLabels[$sitetusModule]['label']); ?></strong>
+                        <span class="description"> — <?php echo esc_html($moduleLabels[$sitetusModule]['description']); ?></span>
                     </label>
                 <?php endforeach; ?>
                 <?php if (($settings['modules_allowed'] ?? []) === []) : ?>
